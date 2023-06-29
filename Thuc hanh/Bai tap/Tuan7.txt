@@ -1,0 +1,76 @@
+#Bai 01
+a = rnorm(35, 10, 5)
+alpha = 0.05
+epsilon = qnorm(1 - alpha / 2) * 5 / sqrt(35)
+cat(10 - epsilon)
+cat(10 + epsilon)
+
+#Bai 02
+data = read.csv("Data/data31.csv")
+ci.mean = function(x, alpha) {
+    trung_binh = mean(x)
+    do_lech_chuan = sd(x)
+    so_luong = length(x)
+    dung_sai = qnorm(1 - alpha / 2) * do_lech_chuan / sqrt(so_luong);
+    cat(trung_binh - dung_sai, trung_binh + dung_sai)
+}
+
+profit = data[,2]
+ci.mean(profit, 1 - 0.95)
+
+#Bai 03
+data = read.csv("Data/data32.csv", header = T);
+time = data[,1]
+ci.mean(time, 1 - 0.95)
+
+ci.prop <- function(f, n, alpha) {
+        ti_le = f / n;
+        dung_sai = qnorm(1 - alpha / 2) * sqrt(ti_le * (1 - ti_le) / length(x));
+        cat(ti_le - dung_sai, ti_le + dung_sai);
+}
+
+cnt = length(time[time > 5])
+ci.prop(cnt, length(time), 1 - 0.9);
+
+#Bai 04
+x <- rep(1.3, 6)
+x <- c(x, rep(1.5, 34));
+x <- c(x, rep(1.7, 31));
+x <- c(x, rep(1.9, 42));
+x <- c(x, rep(2.1, 12));
+ci.mean(x, 1 - 0.95)
+
+#Bai 05
+ktc.tb <- function(mean, adj, s, n, alpha) {
+        if (adj == T) { #Da biet DLC cua tong the
+                epsilon = qnorm(1 - alpha / 2) * s / sqrt(n)
+        } else {
+                if (n >= 30) {
+                        epsilon = qnorm(1 - alpha / 2) * s / sqrt(n)
+                } else {
+                        epsilon = qt(1 - alpha / 2, df = n - 1) * s / sqrt(n)
+                }
+        }
+        cat(mean - epsilon, mean + epsilon)
+}
+
+#Bai 06
+ktc.tb.mau <- function(x, adj, s, alpha) {
+        n = length(x)
+        mean = mean(x)
+        if (adj == F) # Chua biet DLC tong the
+                s = sd(x)
+        ktc.tb(mean, adj, s, n, alpha)
+}
+
+#Bai 07
+x <- rep(12, 2)
+x <- c(x, rep(12.05, 3))
+x <- c(x, rep(12.10, 7))
+x <- c(x, rep(12.15, 9))
+x <- c(x, rep(12.20, 10))
+x <- c(x, rep(12.25, 8))
+x <- c(x, rep(12.30, 6))
+x <- c(x, rep(12.35, 5))
+x <- c(x, rep(12.40, 3))
+ktc.tb.mau(x, F, 0, 1 - 0.95)
